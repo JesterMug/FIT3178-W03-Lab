@@ -81,7 +81,11 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="wD8-pv-dhm">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="23D-YT-ME2"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="23D-YT-ME2">
+                            <connections>
+                                <segue destination="NaH-J1-rqq" kind="show" identifier="allHeroesSegue" id="kqo-k2-Y6N"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
@@ -107,8 +111,83 @@
             </objects>
             <point key="canvasLocation" x="881.67938931297704" y="3.5211267605633805"/>
         </scene>
+        <!--All Heroes-->
+        <scene sceneID="CPD-ai-Cja">
+            <objects>
+                <tableViewController title="All Heroes" id="NaH-J1-rqq" customClass="AllHeroesTableViewController" customModule="FIT3178_W03_Lab" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="ejJ-sf-ad0">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="heroCell" textLabel="Pkr-9a-TXR" detailTextLabel="IBq-5S-dvC" style="IBUITableViewCellStyleSubtitle" id="jfc-tL-9fA">
+                                <rect key="frame" x="0.0" y="55.333332061767578" width="393" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jfc-tL-9fA" id="pyX-38-5HN">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pkr-9a-TXR">
+                                            <rect key="frame" x="20" y="6.0000000000000009" width="25" height="14.333333333333334"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IBq-5S-dvC">
+                                            <rect key="frame" x="19.999999999999996" y="22.333333333333336" width="43.666666666666664" height="14.333333333333334"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="totalCell" id="LU5-Bm-Jvl" customClass="HeroCountTableViewCell" customModule="FIT3178_W03_Lab" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="99" width="393" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LU5-Bm-Jvl" id="wQK-HI-tIH">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UN9-0s-xci">
+                                            <rect key="frame" x="181" y="14" width="31" height="15"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="UN9-0s-xci" firstAttribute="leading" secondItem="wQK-HI-tIH" secondAttribute="leadingMargin" constant="161" id="9RM-o8-3kV"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="UN9-0s-xci" secondAttribute="trailing" constant="161" id="BnI-zu-krB"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="UN9-0s-xci" secondAttribute="bottom" constant="3.6699999999999999" id="Fmr-B8-FJS"/>
+                                        <constraint firstItem="UN9-0s-xci" firstAttribute="top" secondItem="wQK-HI-tIH" secondAttribute="topMargin" constant="3" id="R35-d8-WVU"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="totalLabel" destination="UN9-0s-xci" id="qyj-YG-X4l"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="NaH-J1-rqq" id="XsM-HH-dya"/>
+                            <outlet property="delegate" destination="NaH-J1-rqq" id="mUW-fG-K8T"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="All Heroes" id="LDp-mH-u1g">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0q2-UF-eae"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2xX-gg-rbW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2732" y="4"/>
+        </scene>
     </scenes>
     <resources>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
