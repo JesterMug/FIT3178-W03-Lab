@@ -7,16 +7,6 @@
 
 import UIKit
 
-let SECTION_HERO = 0
-let SECTION_INFO = 1
-
-let CELL_HERO = "heroCell"
-let CELL_INFO = "totalCell"
-
-var allHeroes: [Superhero] = []
-
-weak var superheroDelegate: AddSuperheroDelegate?
-
 extension UIViewController {
     func displayMessage(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -29,6 +19,15 @@ extension UIViewController {
 
 /// <#Description#>
 class AllHeroesTableViewController: UITableViewController {
+    let SECTION_HERO = 0
+    let SECTION_INFO = 1
+
+    let CELL_HERO = "heroCell"
+    let CELL_INFO = "totalCell"
+
+    var allHeroes: [Superhero] = []
+
+    weak var superheroDelegate: AddSuperheroDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

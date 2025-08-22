@@ -8,7 +8,7 @@
 import UIKit
 
 /// <#Description#>
-class CurrentPartyTableViewController: UITableViewController {
+class CurrentPartyTableViewController: UITableViewController, AddSuperheroDelegate {
     
     let SECTION_HERO = 0
     let SECTION_INFO = 1
@@ -17,10 +17,22 @@ class CurrentPartyTableViewController: UITableViewController {
     let CELL_INFO = "partySizeCell"
     
     var currentParty: [Superhero] = []
+    
+    func addSuperhero(_ newHero: Superhero) -> Bool {
+        if currentParty.count >= 6 {
+            return false
+        }
+        
+        tableView.performBatchUpdates ({
+            currentParty.append(newHero)
+            tableView.insertRows(at: [IndexPath(row: currentParty.count - 1, section: SECTION_HERO)], with: .automatic)
+            tableView.reloadSections([SECTION_INFO], with: .automatic)
+        }, completion: nil)
+        return true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        testHeroes()
     }
 
     // MARK: - Table view data source
@@ -81,16 +93,6 @@ class CurrentPartyTableViewController: UITableViewController {
             }, completion: nil)
         }
     }
-    
-    func testHeroes() {
-        currentParty.append(Superhero(name: "Superman", abilities: "Super Powered Alien", universe: .dc))
-        currentParty.append(Superhero(name: "Wonder Woman", abilities: "Goddess", universe: .dc))
-        currentParty.append(Superhero(name: "The Flash", abilities: "Speed", universe: .dc))
-        currentParty.append(Superhero(name: "Green Lantern", abilities: "Power Ring", universe:
-        .dc))
-        currentParty.append(Superhero(name: "Cyborg", abilities: "Robot Beep Beep", universe: .dc))
-        currentParty.append(Superhero(name: "Aquaman", abilities: "Atlantian", universe: .dc))
-    }
 
     /*
     // Override to support rearranging the table view.
@@ -107,14 +109,16 @@ class CurrentPartyTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "allHeroesSegue" {
+            let destination = segue.destination as! AllHeroesTableViewController
+            destination.superheroDelegate = self
+        }
     }
-    */
+    
 
 }
