@@ -18,7 +18,8 @@ extension UIViewController {
 }
 
 /// <#Description#>
-class AllHeroesTableViewController: UITableViewController {
+class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdating {
+    
     let SECTION_HERO = 0
     let SECTION_INFO = 1
 
@@ -26,12 +27,22 @@ class AllHeroesTableViewController: UITableViewController {
     let CELL_INFO = "totalCell"
 
     var allHeroes: [Superhero] = []
+    var filteredHeroes: [Superhero] = []
 
     weak var superheroDelegate: AddSuperheroDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         createDefaultHeroes()
+        filteredHeroes = allHeroes
+        
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search All Heroes"
+        navigationItem.searchController = searchController
+        
+        definesPresentationContext = true
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -42,6 +53,18 @@ class AllHeroesTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text?.lowercased() else { return }
+        
+        if searchText.count > 0 {
+            filteredHeroes = allHeroes.filter({(hero: Superhero) -> Bool in return (hero.name?.lowercased().contains(searchText) ?? false)})
+        } else {
+            filteredHeroes = allHeroes
+        }
+        
+        tableView.reloadData()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 2
@@ -50,7 +73,7 @@ class AllHeroesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if section == SECTION_HERO {
-            return allHeroes.count
+            return filteredHeroes.count
         } else if section == SECTION_INFO {
             return 1
         }
@@ -62,7 +85,7 @@ class AllHeroesTableViewController: UITableViewController {
         if indexPath.section == SECTION_HERO {
             let heroCell = tableView.dequeueReusableCell(withIdentifier: CELL_HERO, for: indexPath)
             var content = heroCell.defaultContentConfiguration()
-            let hero = allHeroes[indexPath.row]
+            let hero = filteredHeroes[indexPath.row]
             content.text = hero.name
             content.secondaryText = hero.abilities
             heroCell.contentConfiguration = content
@@ -71,7 +94,7 @@ class AllHeroesTableViewController: UITableViewController {
         else {
             let infoCell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for:
                                                             indexPath) as! HeroCountTableViewCell
-            infoCell.totalLabel?.text = "\(allHeroes.count) heroes in the database"
+            infoCell.totalLabel?.text = "\(filteredHeroes.count) heroes in the database"
             return infoCell
         }
     }
@@ -89,7 +112,10 @@ class AllHeroesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete && indexPath.section == SECTION_HERO {
             tableView.performBatchUpdates({
-                allHeroes.remove(at: indexPath.row)
+                if let index = self.allHeroes.firstIndex(of: filteredHeroes[indexPath.row]) {
+                    self.allHeroes.remove(at: index)
+                }
+                self.filteredHeroes.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .fade)
                 self.tableView.reloadSections([SECTION_INFO], with: .automatic)
             }, completion: nil)
@@ -99,7 +125,7 @@ class AllHeroesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let superHeroDelegate = superheroDelegate {
-            if superHeroDelegate.addSuperhero(allHeroes[indexPath.row]) {
+            if superHeroDelegate.addSuperhero(filteredHeroes[indexPath.row]) {
                 navigationController?.popViewController(animated: false)
                 return
             }
