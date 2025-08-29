@@ -176,17 +176,110 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="All Heroes" id="LDp-mH-u1g">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0q2-UF-eae"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0q2-UF-eae">
+                            <connections>
+                                <segue destination="c5G-ig-3Xl" kind="show" identifier="createHeroSegue" id="Nfa-AT-F98"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2xX-gg-rbW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2732" y="4"/>
         </scene>
+        <!--Create New Hero-->
+        <scene sceneID="68b-bu-AVv">
+            <objects>
+                <viewController title="Create New Hero" id="c5G-ig-3Xl" customClass="CreateHeroViewController" customModule="FIT3178_W03_Lab" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="j1E-04-Y4w">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hero Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UoI-7t-XWy">
+                                <rect key="frame" x="16" y="194" width="361" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="o22-hz-6dm">
+                                <rect key="frame" x="16" y="223" width="361" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hero Abilities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DLc-Dz-bZT">
+                                <rect key="frame" x="16" y="265" width="361" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Universe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAL-aH-5mX">
+                                <rect key="frame" x="16" y="336" width="361" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uLG-AL-E90">
+                                <rect key="frame" x="16" y="365" width="361" height="32"/>
+                                <segments>
+                                    <segment title="Marvel"/>
+                                    <segment title="DC"/>
+                                </segments>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ol1-8Y-Oaq">
+                                <rect key="frame" x="16" y="428" width="361" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Create Hero"/>
+                                <connections>
+                                    <action selector="createHero:" destination="c5G-ig-3Xl" eventType="touchUpInside" id="pCq-Nj-Kca"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XJv-Jf-mfo">
+                                <rect key="frame" x="16" y="294" width="361" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="nRg-Vo-fM2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ol1-8Y-Oaq" firstAttribute="top" secondItem="uLG-AL-E90" secondAttribute="bottom" constant="32" id="1wP-hg-REh"/>
+                            <constraint firstItem="nRg-Vo-fM2" firstAttribute="trailing" secondItem="kAL-aH-5mX" secondAttribute="trailing" constant="16" id="4vd-0D-ATy"/>
+                            <constraint firstItem="XJv-Jf-mfo" firstAttribute="top" secondItem="DLc-Dz-bZT" secondAttribute="bottom" constant="8" symbolic="YES" id="9ns-Tq-7Ty"/>
+                            <constraint firstItem="nRg-Vo-fM2" firstAttribute="trailing" secondItem="UoI-7t-XWy" secondAttribute="trailing" constant="16" id="Bto-wH-YEv"/>
+                            <constraint firstItem="uLG-AL-E90" firstAttribute="leading" secondItem="nRg-Vo-fM2" secondAttribute="leading" constant="16" id="Ekq-Lc-yuL"/>
+                            <constraint firstItem="UoI-7t-XWy" firstAttribute="leading" secondItem="nRg-Vo-fM2" secondAttribute="leading" constant="16" id="H58-Da-2uX"/>
+                            <constraint firstItem="XJv-Jf-mfo" firstAttribute="leading" secondItem="nRg-Vo-fM2" secondAttribute="leading" constant="16" id="ICs-yH-mSg"/>
+                            <constraint firstItem="kAL-aH-5mX" firstAttribute="leading" secondItem="nRg-Vo-fM2" secondAttribute="leading" constant="16" id="Kke-Vd-wDg"/>
+                            <constraint firstItem="kAL-aH-5mX" firstAttribute="top" secondItem="XJv-Jf-mfo" secondAttribute="bottom" constant="8" symbolic="YES" id="Kvf-Ws-Sdg"/>
+                            <constraint firstItem="nRg-Vo-fM2" firstAttribute="trailing" secondItem="o22-hz-6dm" secondAttribute="trailing" constant="16" id="Lzw-rU-zUg"/>
+                            <constraint firstItem="DLc-Dz-bZT" firstAttribute="leading" secondItem="nRg-Vo-fM2" secondAttribute="leading" constant="16" id="OyH-9C-z90"/>
+                            <constraint firstItem="nRg-Vo-fM2" firstAttribute="trailing" secondItem="uLG-AL-E90" secondAttribute="trailing" constant="16" id="Pnb-Ie-mga"/>
+                            <constraint firstItem="ol1-8Y-Oaq" firstAttribute="leading" secondItem="nRg-Vo-fM2" secondAttribute="leading" constant="16" id="SdG-2T-kas"/>
+                            <constraint firstItem="o22-hz-6dm" firstAttribute="top" secondItem="UoI-7t-XWy" secondAttribute="bottom" constant="8" symbolic="YES" id="UpD-Kk-tSH"/>
+                            <constraint firstItem="DLc-Dz-bZT" firstAttribute="top" secondItem="o22-hz-6dm" secondAttribute="bottom" constant="8" symbolic="YES" id="V0Z-Wh-PtZ"/>
+                            <constraint firstItem="uLG-AL-E90" firstAttribute="top" secondItem="kAL-aH-5mX" secondAttribute="bottom" constant="8" symbolic="YES" id="WC1-Bj-FBA"/>
+                            <constraint firstItem="nRg-Vo-fM2" firstAttribute="trailing" secondItem="ol1-8Y-Oaq" secondAttribute="trailing" constant="16" id="dHQ-xj-QWN"/>
+                            <constraint firstItem="nRg-Vo-fM2" firstAttribute="trailing" secondItem="DLc-Dz-bZT" secondAttribute="trailing" constant="16" id="sjN-Wz-iwG"/>
+                            <constraint firstItem="UoI-7t-XWy" firstAttribute="top" secondItem="nRg-Vo-fM2" secondAttribute="top" constant="32" id="tA9-gR-oGx"/>
+                            <constraint firstItem="nRg-Vo-fM2" firstAttribute="trailing" secondItem="XJv-Jf-mfo" secondAttribute="trailing" constant="16" id="tZt-3a-2yZ"/>
+                            <constraint firstItem="o22-hz-6dm" firstAttribute="leading" secondItem="nRg-Vo-fM2" secondAttribute="leading" constant="16" id="uw8-hI-epS"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Create New Hero" id="Z63-Mq-b54"/>
+                    <connections>
+                        <outlet property="abilitiesTextField" destination="XJv-Jf-mfo" id="K6x-8V-8ao"/>
+                        <outlet property="nameTextField" destination="o22-hz-6dm" id="gBP-Ld-jOV"/>
+                        <outlet property="universeSegmentedControl" destination="uLG-AL-E90" id="EsR-42-ifE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tVb-yi-eNI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3664.8854961832058" y="3.5211267605633805"/>
+        </scene>
     </scenes>
     <resources>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -18,7 +18,19 @@ extension UIViewController {
 }
 
 /// <#Description#>
-class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdating {
+class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdating, AddSuperheroDelegate {
+    
+    func addSuperhero(_ newHero: Superhero) -> Bool {
+        tableView.performBatchUpdates({
+            allHeroes.append(newHero)
+            filteredHeroes.append(newHero)
+            
+            tableView.insertRows(at: [IndexPath(row: filteredHeroes.count - 1, section: SECTION_HERO)], with: .automatic)
+            tableView.reloadSections([SECTION_INFO], with: .automatic)
+        }, completion: nil)
+        return true
+    }
+    
     
     let SECTION_HERO = 0
     let SECTION_INFO = 1
@@ -150,15 +162,17 @@ class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdati
      }
      */
     
-    /*
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
+         if segue.identifier == "createHeroSegue" {
+             let destination = segue.destination as! CreateHeroViewController
+             destination.superHeroDelegate = self
+         }
      }
-     */
+     
     
     func createDefaultHeroes() {
         allHeroes.append(Superhero(name: "Bruce Wayne", abilities: "Money", universe: .dc))
