@@ -11,10 +11,10 @@ class CreateHeroViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var abilitiesTextField: UITextField!
     @IBOutlet weak var universeSegmentedControl: UISegmentedControl!
-    weak var superHeroDelegate: AddSuperheroDelegate?
+    weak var databaseController: DatabaseProtocol?
     
     @IBAction func createHero(_ sender: Any) {
-        guard let name = nameTextField.text, let abilities = abilitiesTextField.text, let universe = Universe(rawValue: universeSegmentedControl.selectedSegmentIndex) else {
+        guard let name = nameTextField.text, let abilities = abilitiesTextField.text, let universe = Universe(rawValue: Int32(universeSegmentedControl.selectedSegmentIndex)) else {
             return
         }
         
@@ -30,16 +30,16 @@ class CreateHeroViewController: UIViewController {
             return
         }
         
-        let hero = Superhero(name: name, abilities: abilities, universe: universe)
-        let _ = superHeroDelegate?.addSuperhero(hero)
+        let _ = databaseController?.addSuperhero(name: name, abilities: abilities, universe: universe)
         navigationController?.popViewController(animated: true)
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        databaseController = appDelegate?.databaseController
     }
     
 

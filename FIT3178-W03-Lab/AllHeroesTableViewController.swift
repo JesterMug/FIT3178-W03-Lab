@@ -18,7 +18,21 @@ extension UIViewController {
 }
 
 /// <#Description#>
-class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdating, AddSuperheroDelegate {
+class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener {
+    
+    
+    var listenerType = ListenerType.heroes
+    weak var databaseController: DatabaseProtocol?
+    
+    func onTeamChange(change: DatabaseChange, teamHeroes: [Superhero]) {
+        // Do nothing.
+    }
+    
+    func onAllHeroesChange(change: DatabaseChange, heroes: [Superhero]) {
+        allHeroes = heroes
+        updateSearchResults(for: navigationItem.searchController!)
+    }
+    
     
     func addSuperhero(_ newHero: Superhero) -> Bool {
         tableView.performBatchUpdates({
@@ -45,7 +59,10 @@ class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdati
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        createDefaultHeroes()
+        
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        databaseController = appDelegate?.databaseController
+        
         filteredHeroes = allHeroes
         
         let searchController = UISearchController(searchResultsController: nil)
@@ -61,6 +78,18 @@ class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdati
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        databaseController?.addListener(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        databaseController?.removeListener(self)
     }
     
     // MARK: - Table view data source
@@ -123,14 +152,8 @@ class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdati
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete && indexPath.section == SECTION_HERO {
-            tableView.performBatchUpdates({
-                if let index = self.allHeroes.firstIndex(of: filteredHeroes[indexPath.row]) {
-                    self.allHeroes.remove(at: index)
-                }
-                self.filteredHeroes.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .fade)
-                self.tableView.reloadSections([SECTION_INFO], with: .automatic)
-            }, completion: nil)
+            let hero = filteredHeroes[indexPath.row]
+            databaseController?.deleteSuperhero(hero: hero)
         }
     }
     
@@ -167,21 +190,5 @@ class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdati
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         if segue.identifier == "createHeroSegue" {
-             let destination = segue.destination as! CreateHeroViewController
-             destination.superHeroDelegate = self
-         }
      }
-     
-    
-    func createDefaultHeroes() {
-        allHeroes.append(Superhero(name: "Bruce Wayne", abilities: "Money", universe: .dc))
-        allHeroes.append(Superhero(name: "Superman", abilities: "Super Powered Alien", universe:
-                .dc))
-        allHeroes.append(Superhero(name: "Wonder Woman", abilities: "Goddess", universe: .dc))
-        allHeroes.append(Superhero(name: "The Flash", abilities: "Speed", universe: .dc))
-        allHeroes.append(Superhero(name: "Green Lantern", abilities: "Power Ring", universe: .dc))
-        allHeroes.append(Superhero(name: "Cyborg", abilities: "Robot Beep Beep", universe: .dc))
-        allHeroes.append(Superhero(name: "Aquaman", abilities: "Atlantian", universe: .dc))
-    }
 }

@@ -7,10 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		443244962E6A019E00F7C887 /* Superhero+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443244922E6A019E00F7C887 /* Superhero+CoreDataClass.swift */; };
+		443244972E6A019E00F7C887 /* Team+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443244942E6A019E00F7C887 /* Team+CoreDataClass.swift */; };
+		443244982E6A019E00F7C887 /* Superhero+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443244932E6A019E00F7C887 /* Superhero+CoreDataProperties.swift */; };
+		443244992E6A019E00F7C887 /* Team+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443244952E6A019E00F7C887 /* Team+CoreDataProperties.swift */; };
 		448CA6F22E57F535006A26E8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 448CA6F12E57F52A006A26E8 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		443244922E6A019E00F7C887 /* Superhero+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Superhero+CoreDataClass.swift"; sourceTree = "<group>"; };
+		443244932E6A019E00F7C887 /* Superhero+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Superhero+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		443244942E6A019E00F7C887 /* Team+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+CoreDataClass.swift"; sourceTree = "<group>"; };
+		443244952E6A019E00F7C887 /* Team+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		448CA6F12E57F52A006A26E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		44AE98A82E4E9AE300C3D89B /* FIT3178-W03-Lab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FIT3178-W03-Lab.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -50,6 +58,10 @@
 		44AE989F2E4E9AE300C3D89B = {
 			isa = PBXGroup;
 			children = (
+				443244922E6A019E00F7C887 /* Superhero+CoreDataClass.swift */,
+				443244932E6A019E00F7C887 /* Superhero+CoreDataProperties.swift */,
+				443244942E6A019E00F7C887 /* Team+CoreDataClass.swift */,
+				443244952E6A019E00F7C887 /* Team+CoreDataProperties.swift */,
 				448CA6F12E57F52A006A26E8 /* README.md */,
 				44AE98AA2E4E9AE300C3D89B /* FIT3178-W03-Lab */,
 				44AE98A92E4E9AE300C3D89B /* Products */,
@@ -139,6 +151,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				443244962E6A019E00F7C887 /* Superhero+CoreDataClass.swift in Sources */,
+				443244972E6A019E00F7C887 /* Team+CoreDataClass.swift in Sources */,
+				443244982E6A019E00F7C887 /* Superhero+CoreDataProperties.swift in Sources */,
+				443244992E6A019E00F7C887 /* Team+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
