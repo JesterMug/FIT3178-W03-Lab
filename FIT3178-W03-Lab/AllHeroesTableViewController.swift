@@ -54,8 +54,6 @@ class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdati
 
     var allHeroes: [Superhero] = []
     var filteredHeroes: [Superhero] = []
-
-    weak var superheroDelegate: AddSuperheroDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -159,15 +157,13 @@ class AllHeroesTableViewController: UITableViewController, UISearchResultsUpdati
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let superHeroDelegate = superheroDelegate {
-            if superHeroDelegate.addSuperhero(filteredHeroes[indexPath.row]) {
-                navigationController?.popViewController(animated: false)
-                return
-            }
-            else {
-                displayMessage(title: "Party Full", message: "Unable to add more members to party")
-            }
+        let hero = filteredHeroes[indexPath.row]
+        let heroAdded = databaseController?.addHeroToTeam(hero: hero, team: databaseController!.defaultTeam) ?? false
+        if heroAdded {
+            navigationController?.popViewController(animated: false)
+            return
         }
+        displayMessage(title: "Party Full", message: "Unable to add more members to your party")
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

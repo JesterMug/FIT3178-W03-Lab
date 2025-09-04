@@ -34,4 +34,10 @@ protocol DatabaseProtocol: AnyObject {
     func addSuperhero(name: String, abilities: String, universe: Universe) -> Superhero
     func deleteSuperhero(hero: Superhero)
     
+    var defaultTeam: Team {get}
+    
+    func addTeam(teamName: String) -> Team
+    func deleteTeam(team: Team)
+    func addHeroToTeam(hero: Superhero, team: Team) -> Bool
+    func removeHeroFromTeam(hero: Superhero, team: Team)
 }

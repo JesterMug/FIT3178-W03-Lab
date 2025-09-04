@@ -9,9 +9,84 @@ import UIKit
 import CoreData
 
 class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsControllerDelegate {
+    let DEFAULT_TEAM_NAME = "Default Team"
+    var teamHeroesFetchedResultsController: NSFetchedResultsController<Superhero>?
     var listeners = MulticastDelegate<DatabaseListener>()
     var persistentContainer: NSPersistentContainer
     var allHeroesFetchedResultsController: NSFetchedResultsController<Superhero>?
+    
+    lazy var defaultTeam: Team = {
+        var teams = [Team]()
+        
+        let request: NSFetchRequest<Team> = Team.fetchRequest()
+        let predicate = NSPredicate(format: "name == %@", DEFAULT_TEAM_NAME)
+        request.predicate = predicate
+        
+        do {
+            teams = try persistentContainer.viewContext.fetch(request)
+        } catch {
+            print("Fetch Request Failed: \(error)")
+        }
+        
+        if let firstTeam = teams.first {
+            return firstTeam
+        }
+        return addTeam(teamName: DEFAULT_TEAM_NAME)
+    }()
+    
+    func addTeam(teamName: String) -> Team {
+        let team = Team(context: persistentContainer.viewContext)
+        team.name = teamName
+        
+        return team
+    }
+    
+    func deleteTeam(team: Team) {
+        persistentContainer.viewContext.delete(team)
+    }
+    
+    func addHeroToTeam(hero: Superhero, team: Team) -> Bool {
+        guard let heroes = team.heroes, heroes.contains(hero) == false, heroes.count < 6 else {
+            return false
+        }
+        
+        team.addToHeroes(hero)
+        return true
+    }
+    
+    func removeHeroFromTeam(hero: Superhero, team: Team) {
+        team.removeFromHeroes(hero)
+    }
+    
+    func fetchTeamHeroes() -> [Superhero] {
+        if teamHeroesFetchedResultsController == nil {
+            let fetchRequest: NSFetchRequest<Superhero> = Superhero.fetchRequest()
+            let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+            let predicate = NSPredicate(format: "Any teams.name == %@", DEFAULT_TEAM_NAME)
+            fetchRequest.sortDescriptors = [nameSortDescriptor]
+            fetchRequest.predicate = predicate
+            
+            teamHeroesFetchedResultsController = NSFetchedResultsController<Superhero>(
+                fetchRequest: fetchRequest,
+                managedObjectContext: persistentContainer.viewContext,
+                sectionNameKeyPath: nil,
+                cacheName: nil
+            )
+            teamHeroesFetchedResultsController?.delegate = self
+            
+            do {
+                try teamHeroesFetchedResultsController?.performFetch()
+            } catch {
+                print("Failed to perform fetch for team heroes: \(error)")
+            }
+        }
+        var heroes = [Superhero]()
+        if teamHeroesFetchedResultsController?.fetchedObjects != nil {
+            heroes = (teamHeroesFetchedResultsController?.fetchedObjects)!
+        }
+        
+        return heroes
+    }
     
     override init() {
         persistentContainer = NSPersistentContainer(name: "Week04-DataModel")
@@ -41,6 +116,10 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
         
         if listener.listenerType == .heroes || listener.listenerType == .all {
             listener.onAllHeroesChange(change: .update, heroes: fetchAllHeroes())
+        }
+        
+        if listener.listenerType == .team || listener.listenerType == .all {
+            listener.onTeamChange(change: .update, teamHeroes: fetchTeamHeroes())
         }
     }
     
@@ -105,6 +184,12 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
             listeners.invoke() {
                 listener in if listener.listenerType == .heroes || listener.listenerType == .all {
                     listener.onAllHeroesChange(change: .update, heroes: fetchAllHeroes())
+                }
+            }
+        } else if controller == teamHeroesFetchedResultsController {
+            listeners.invoke {
+                (listener) in if listener.listenerType == .team || listener.listenerType == .all {
+                    listener.onTeamChange(change: .update, teamHeroes: fetchTeamHeroes())
                 }
             }
         }

@@ -8,7 +8,19 @@
 import UIKit
 
 /// <#Description#>
-class CurrentPartyTableViewController: UITableViewController, AddSuperheroDelegate {
+class CurrentPartyTableViewController: UITableViewController, DatabaseListener {
+    var listenerType: ListenerType = .team
+    weak var databaseController: DatabaseProtocol?
+    
+    func onTeamChange(change: DatabaseChange, teamHeroes: [Superhero]) {
+        currentParty = teamHeroes
+        tableView.reloadData()
+    }
+    
+    func onAllHeroesChange(change: DatabaseChange, heroes: [Superhero]) {
+        // Do something
+    }
+    
     
     let SECTION_HERO = 0
     let SECTION_INFO = 1
@@ -19,20 +31,25 @@ class CurrentPartyTableViewController: UITableViewController, AddSuperheroDelega
     var currentParty: [Superhero] = []
     
     func addSuperhero(_ newHero: Superhero) -> Bool {
-        if currentParty.count >= 6 {
-            return false
-        }
-        
-        tableView.performBatchUpdates ({
-            currentParty.append(newHero)
-            tableView.insertRows(at: [IndexPath(row: currentParty.count - 1, section: SECTION_HERO)], with: .automatic)
-            tableView.reloadSections([SECTION_INFO], with: .automatic)
-        }, completion: nil)
-        return true
+        return databaseController?.addHeroToTeam(hero: newHero, team: databaseController!.defaultTeam) ?? false
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        databaseController = appDelegate?.databaseController
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        databaseController?.addListener(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        databaseController?.removeListener(self)
     }
 
     // MARK: - Table view data source
@@ -86,11 +103,8 @@ class CurrentPartyTableViewController: UITableViewController, AddSuperheroDelega
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete && indexPath.section == SECTION_HERO {
-            tableView.performBatchUpdates({
-                self.currentParty.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .fade)
-                self.tableView.reloadSections([SECTION_INFO], with: .automatic)
-            }, completion: nil)
+            self.databaseController?.removeHeroFromTeam(hero: currentParty[indexPath.row], team: databaseController!.defaultTeam)
+            }
         }
     }
 
@@ -113,12 +127,7 @@ class CurrentPartyTableViewController: UITableViewController, AddSuperheroDelega
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "allHeroesSegue" {
-            let destination = segue.destination as! AllHeroesTableViewController
-            destination.superheroDelegate = self
-        }
-    }
+
     
 
-}
+
